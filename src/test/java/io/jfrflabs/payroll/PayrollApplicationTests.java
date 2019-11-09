@@ -1,10 +1,10 @@
-package io.jfrflabs.sgtutrest;
+package io.jfrflabs.payroll;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SgTutrestApplicationTests {
+class PayrollApplicationTests {
 
 	@Test
 	void contextLoads() {
