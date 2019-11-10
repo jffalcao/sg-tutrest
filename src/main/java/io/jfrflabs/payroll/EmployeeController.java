@@ -33,6 +33,8 @@ public class EmployeeController {
     @GetMapping("/employees/{id}")
     Employee one(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+
+        //TODO Adding Links to GET using HATEOAS https://spring.io/guides/tutorials/rest/#_what_makes_something_restful
     }
 
     @PutMapping("/employees/{id}")
