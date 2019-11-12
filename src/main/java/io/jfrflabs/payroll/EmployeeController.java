@@ -3,6 +3,14 @@ package io.jfrflabs.payroll;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
+
+
 
 @RestController
 public class EmployeeController {
@@ -17,24 +25,28 @@ public class EmployeeController {
     // Aggregate Root
 
     @GetMapping("/employees")
-    List<Employee> all() {
+    Resources<Resource<Employee>> all(){
+        List<Resource<Employee>> employees = repository.findAll().stream()
+                .map(employee -> new Resource<>(employee,
+                        linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
+                        linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
+                .collect(Collectors.toList());
 
-        return repository.findAll();
-    }
-
-    @PostMapping("/employees")
-    Employee newEmployee(@RequestBody Employee newEmployee){
-
-        return repository.save(newEmployee);
+        return new Resources<>(employees,
+                linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
     }
 
     // Single Item
 
     @GetMapping("/employees/{id}")
-    Employee one(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+    Resource<Employee> one(@PathVariable Long id) {
 
-        //TODO Adding Links to GET using HATEOAS https://spring.io/guides/tutorials/rest/#_what_makes_something_restful
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
+
+        return new Resource<>(employee,
+                linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
     }
 
     @PutMapping("/employees/{id}")

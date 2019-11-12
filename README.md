@@ -11,7 +11,7 @@ Part of the Spring guide tutorials
 
 ## Source code 
 
-- Create a new Github project
+- Create a new Github project (SpringBoot 2.1.9)
 - Add to local structure ~/<workspace>/github/sg-tutrest/
 
 ## Running and test the different RPC Endpoints of the application
