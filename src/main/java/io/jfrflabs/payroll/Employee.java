@@ -10,6 +10,8 @@ import javax.persistence.Id;
 @Entity
 public class Employee {
 
+    // TODO: Modify Class in order to seperate firstname and lastname from the original name variable.
+
     private @Id @GeneratedValue Long id;
     private String name;
     private String role;
